@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/AyoyAB/bankid-service-stub#readme",
   "dependencies": {
-    "koa": "^2.13.4"
+    "koa": "^2.13.4",
+    "koa-router": "^12.0.0"
   },
   "devDependencies": {
     "eslint": "^8.23.0",

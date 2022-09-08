@@ -1,11 +1,9 @@
 const Koa = require('koa');
+const router = require('./routers/root');
 
 const app = new Koa();
 
-// Just return a canned response for now.
-app.use(async (ctx) => {
-  ctx.body = 'Hello, world!';
-});
+app.use(router.routes(), router.allowedMethods());
 
 // Optionally start listening if this is the main module.
 if (typeof module !== 'undefined' && require.main === module) {
