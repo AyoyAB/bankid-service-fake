@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "BankID web service stub intended for use during relying party testing",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
   "scripts": {
     "prestart": "node scripts/certificates.js",
     "start": "node src/app.js",

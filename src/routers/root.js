@@ -1,7 +1,8 @@
-const Router = require('koa-router');
-const rpv51 = require('./rpv51');
+import Router from 'koa-router';
+
+import rpv51 from './rpv51.js';
 
 const root = new Router();
 root.use('/rp/v5.1', rpv51.routes(), rpv51.allowedMethods());
 
-module.exports = root;
+export default root;

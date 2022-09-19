@@ -1,4 +1,4 @@
-const Router = require('koa-router');
+import Router from 'koa-router';
 
 const rpv51 = new Router();
 
@@ -24,4 +24,4 @@ rpv51.post('/cancel', (ctx, next) => {
   next();
 });
 
-module.exports = rpv51;
+export default rpv51;
