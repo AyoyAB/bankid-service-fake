@@ -10,12 +10,12 @@ app.use(router.routes(), router.allowedMethods());
 
 const httpsOptions = {
   // Use the supplied or generated server key pair.
-  key: await fs.readFile('data/server.key', { encoding: 'utf8' }),
-  cert: await fs.readFile('data/server.crt', { encoding: 'utf8' }),
+  key: await fs.readFile('data/tls/server.key', { encoding: 'utf8' }),
+  cert: await fs.readFile('data/tls/server.crt', { encoding: 'utf8' }),
   // Require client certificates.
   requestCert: true,
   // Trust the supplied or generated client CA certificate.
-  ca: [await fs.readFile('data/client-ca.crt', { encoding: 'utf8' })],
+  ca: [await fs.readFile('data/tls/client-ca.crt', { encoding: 'utf8' })],
 };
 
 https.createServer(httpsOptions, app.callback()).listen(3000);

@@ -58,48 +58,48 @@ async function createCertificate(key, cn, caKey, caCert, file) {
 }
 
 async function createServerCA() {
-  const key = await createPrivateKey('data/server-ca.key');
+  const key = await createPrivateKey('data/tls/server-ca.key');
   const cert = await createCACertificate(
     key,
     'Test Server CA',
-    'data/server-ca.crt'
+    'data/tls/server-ca.crt'
   );
 
   return { key, cert };
 }
 
 async function createServerCertificate(caKey, caCert) {
-  const key = await createPrivateKey('data/server.key');
+  const key = await createPrivateKey('data/tls/server.key');
   const cert = await createCertificate(
     key,
     'localhost',
     caKey,
     caCert,
-    'data/server.crt'
+    'data/tls/server.crt'
   );
 
   return { key, cert };
 }
 
 async function createClientCA() {
-  const key = await createPrivateKey('data/client-ca.key');
+  const key = await createPrivateKey('data/tls/client-ca.key');
   const cert = await createCACertificate(
     key,
     'Test Client CA',
-    'data/client-ca.crt'
+    'data/tls/client-ca.crt'
   );
 
   return { key, cert };
 }
 
 async function createClientCertificate(caKey, caCert) {
-  const key = await createPrivateKey('data/client.key');
+  const key = await createPrivateKey('data/tls/client.key');
   const cert = await createCertificate(
     key,
     'Test Client',
     caKey,
     caCert,
-    'data/client.crt'
+    'data/tls/client.crt'
   );
 
   return { key, cert };
