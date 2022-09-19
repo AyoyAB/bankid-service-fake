@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import { promises as fs } from 'fs';
 import https from 'https';
 
@@ -6,6 +7,7 @@ import router from './routers/root.js';
 
 const app = new Koa();
 
+app.use(bodyParser);
 app.use(router.routes(), router.allowedMethods());
 
 const httpsOptions = {
