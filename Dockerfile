@@ -38,6 +38,7 @@ ENV NODE_ENV=production
 ENV PATH=/app/node_modules/.bin:$PATH
 EXPOSE 3000
 USER 1000
+VOLUME [ "/app/data" ]
 WORKDIR /app
 
 ENTRYPOINT ["/usr/bin/tini", "--"]

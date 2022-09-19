@@ -4,6 +4,7 @@
   "description": "BankID web service stub intended for use during relying party testing",
   "private": true,
   "scripts": {
+    "prestart": "node scripts/certificates.js",
     "start": "node src/app.js",
     "format": "prettier --config .prettierrc 'src/**/*.js' --write",
     "lint": "eslint 'src/**/*.js'",
@@ -20,7 +21,8 @@
   "homepage": "https://github.com/AyoyAB/bankid-service-stub#readme",
   "dependencies": {
     "koa": "^2.13.4",
-    "koa-router": "^12.0.0"
+    "koa-router": "^12.0.0",
+    "pem": "^1.14.6"
   },
   "devDependencies": {
     "eslint": "^8.23.0",
