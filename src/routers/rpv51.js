@@ -1,27 +1,30 @@
 import Router from 'koa-router';
+import koaBody from 'koa-body';
 
 const rpv51 = new Router();
 
-rpv51.post('/auth', (ctx, next) => {
+rpv51.post('/auth', koaBody(), async (ctx, next) => {
   // TODO: Forward to handler instead.
   ctx.body = 'auth';
-  next();
+  await next();
 });
 
-rpv51.post('/sign', (ctx, next) => {
+rpv51.post('/sign', koaBody(), async (ctx, next) => {
   // TODO: Forward to handler instead.
   ctx.body = 'sign';
-  next();
+  await next();
 });
 
-rpv51.post('/collect', (ctx, next) => {
+rpv51.post('/collect', koaBody(), async (ctx, next) => {
   // TODO: Forward to handler instead.
-  next();
+  ctx.body = 'collect';
+  await next();
 });
 
-rpv51.post('/cancel', (ctx, next) => {
+rpv51.post('/cancel', koaBody(), async (ctx, next) => {
   // TODO: Forward to handler instead.
-  next();
+  ctx.body = 'cancel';
+  await next();
 });
 
 export default rpv51;
