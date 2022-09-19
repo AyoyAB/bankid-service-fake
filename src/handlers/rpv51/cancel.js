@@ -1,5 +1,10 @@
+import { parseCollectCancelRequest } from '../../lib/request.js';
+
 async function cancelHandler(ctx, next) {
-  ctx.body = 'cancel';
+  const request = parseCollectCancelRequest(ctx.request.body);
+
+  ctx.body = { op: 'cancel', request };
+
   await next();
 }
 

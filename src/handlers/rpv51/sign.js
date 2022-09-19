@@ -1,5 +1,10 @@
+import { parseAuthSignRequest } from '../../lib/request.js';
+
 async function signHandler(ctx, next) {
-  ctx.body = 'sign';
+  const request = parseAuthSignRequest(ctx.request.body);
+
+  ctx.body = { op: 'sign', request };
+
   await next();
 }
 
