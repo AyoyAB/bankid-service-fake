@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/AyoyAB/bankid-service-stub#readme",
   "dependencies": {
+    "@isaacs/ttlcache": "^1.2.0",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
     "koa-router": "^12.0.0"
