@@ -1,9 +1,28 @@
-import { parseCollectCancelRequest } from '../../lib/request.js';
+import * as cache from '../../lib/cache.js';
+import * as request from '../../lib/request.js';
+import * as response from '../../lib/response.js';
 
 async function cancelHandler(ctx, next) {
-  const request = parseCollectCancelRequest(ctx.request.body);
+  // Extract the order reference from the request.
+  const { orderRef } = request.parseCollectCancelRequest(ctx.request.body);
 
-  ctx.body = { op: 'cancel', request };
+  let cancelResponse = response.createCancelResponse();
+  if (cache.hasPendingAuth(orderRef)) {
+    // We found a matching authentication, so delete it.
+    cache.deletePendingAuth(orderRef);
+  } else if (cache.hasPendingSign(orderRef)) {
+    // We found a matching signature, so delete it.
+    cache.deletePendingSign(orderRef);
+  } else {
+    // No match was found, so return an error.
+    cancelResponse = response.createErrorResponse(
+      'invalidParameters',
+      'No such order'
+    );
+    ctx.response.status = 400;
+  }
+
+  ctx.body = cancelResponse;
 
   await next();
 }

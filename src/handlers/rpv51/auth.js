@@ -1,9 +1,21 @@
-import { parseAuthSignRequest } from '../../lib/request.js';
+import * as cache from '../../lib/cache.js';
+import * as response from '../../lib/response.js';
 
 async function authHandler(ctx, next) {
-  const request = parseAuthSignRequest(ctx.request.body);
+  // Generate a new order reference for this authentication.
+  const orderRef = cache.createOrderRef();
 
-  ctx.body = { op: 'auth', request };
+  // Default to letting this transaction expire after a few collects.
+  const collectResponses = [
+    response.createPendingCollectResponse(orderRef, 'outstandingTransaction'),
+    response.createPendingCollectResponse(orderRef, 'noClient'),
+    response.createFailedCollectResponse(orderRef, 'expiredTransaction'),
+  ];
+  cache.setPendingAuth(orderRef, collectResponses);
+
+  // Create an auth response from the order reference.
+  const authResponse = response.createAuthSignResponse(orderRef);
+  ctx.body = authResponse;
 
   await next();
 }

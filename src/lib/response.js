@@ -14,11 +14,13 @@ import { randomUUID } from 'crypto';
 /**
  * Creates an auth or sign JSON response body with random UUID:s.
  *
+ * @param {string} orderRef - The order reference.
+ *
  * @returns {AuthSignResponse} The created response.
  */
-export function createAuthSignResponse() {
+export function createAuthSignResponse(orderRef) {
   return {
-    orderRef: randomUUID(),
+    orderRef,
     autoStartToken: randomUUID(),
     qrStartToken: randomUUID(),
     qrStartSecret: randomUUID(),
@@ -140,4 +142,25 @@ export function createPendingCollectResponse(orderRef, hintCode) {
  */
 export function createCompleteCollectResponse(orderRef, completionData) {
   return { status: 'complete', orderRef, completionData };
+}
+
+/**
+ * The error response.
+ *
+ * @typedef ErrorResponse
+ * @type {object}
+ * @property {string} errorCode - The error code.
+ * @property {string} details - The error details.
+ */
+
+/**
+ * Creates an error response.
+ *
+ * @param {string} errorCode - The error code.
+ * @param {string} details - The error details.
+ *
+ * @returns {ErrorResponse} The created response.
+ */
+export function createErrorResponse(errorCode, details) {
+  return { errorCode, details };
 }
