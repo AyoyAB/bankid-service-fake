@@ -103,5 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
-# Our temporary certificates
-data
+# Our test certificates
+data/bankid/*
+!data/bankid/README.md
+data/tls/*
+!data/tls/README.md
