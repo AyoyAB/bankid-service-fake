@@ -1,4 +1,6 @@
 /**
+ * The auth or sign requirements.
+ *
  * @typedef Requirement
  * @type {object}
  * @property {string=} cardReader - The optional smart card reader requirement.
@@ -32,12 +34,14 @@ export function parseRequirement(requirement) {
 }
 
 /**
+ * The auth or sign call request format.
+ *
  * @typedef AuthSignRequest
  * @type {object}
  * @property {string} endUserIp - The end user ip address.
  * @property {string=} personalNumber - The optional end user personal number.
  * @property {string=} userNonVisibleData - The optional non-visible data.
- * @property {string=} userVisibleData - The optional visible data. Required for signing.
+ * @property {string=} userVisibleData - The optional visible data. Required when signing.
  * @property {string=} userVisibleDataFormat - The optional visible data format.
  * @property {Requirement=} requirement - The optional requirements.
  */
@@ -65,6 +69,8 @@ export function parseAuthSignRequest(body) {
 }
 
 /**
+ * The collect of cancel call request format.
+ *
  * @typedef CollectCancelRequest
  * @type {object}
  * @property {string} orderRef - The order reference returned by auth or sign.
