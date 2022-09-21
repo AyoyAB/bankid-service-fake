@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import TTLCache from '@isaacs/ttlcache';
 
 // The maximum size of the individual caches.

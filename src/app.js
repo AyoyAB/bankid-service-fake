@@ -1,6 +1,6 @@
 import Koa from 'koa';
-import { promises as fs } from 'fs';
-import https from 'https';
+import fs from 'node:fs/promises';
+import https from 'node:https';
 
 import router from './routers/root.js';
 
