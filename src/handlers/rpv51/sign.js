@@ -2,6 +2,9 @@ import * as cache from '../../lib/cache.js';
 import * as response from '../../lib/response.js';
 
 async function signHandler(ctx, next) {
+  // Make sure we have a client certificate..
+  ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
+
   // Generate a new order reference for this signature.
   const orderRef = cache.createOrderRef();
 

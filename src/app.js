@@ -2,9 +2,12 @@ import Koa from 'koa';
 import fs from 'node:fs/promises';
 import https from 'node:https';
 
+import certMiddleware from './middleware/cert.js';
 import router from './routers/root.js';
 
 const app = new Koa();
+
+app.use(certMiddleware);
 
 app.use(router.routes(), router.allowedMethods());
 

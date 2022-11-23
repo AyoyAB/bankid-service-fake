@@ -3,6 +3,9 @@ import * as request from '../../lib/request.js';
 import * as response from '../../lib/response.js';
 
 async function cancelHandler(ctx, next) {
+  // Make sure we have a client certificate..
+  ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
+
   // Extract the order reference from the request.
   const { orderRef } = request.parseCollectCancelRequest(ctx.request.body);
 

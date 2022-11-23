@@ -3,6 +3,9 @@ import * as request from '../../lib/request.js';
 import * as response from '../../lib/response.js';
 
 async function collectHandler(ctx, next) {
+  // Make sure we have a client certificate..
+  ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
+
   // Extract the order reference from the request.
   const { orderRef } = request.parseCollectCancelRequest(ctx.request.body);
 
@@ -14,11 +17,12 @@ async function collectHandler(ctx, next) {
     // We'll want to return the first one.
     collectResponse = responses.shift();
 
-    // Now write the shifted array back to the cache.
+    // Now check how we should handle the cache.
     if (responses.length === 0) {
-      // If the array is empty, just remove it so we don't need an additional check when reading.
+      // The array is empty, so delete the item from the cache.
       cache.deletePendingAuth(orderRef);
     } else {
+      // There are still responses left to send, so write them to the cache.
       cache.setPendingAuth(orderRef, responses);
     }
   } else if (cache.hasPendingSign(orderRef)) {
@@ -28,11 +32,12 @@ async function collectHandler(ctx, next) {
     // We'll want to return the first one.
     collectResponse = responses.shift();
 
-    // Now write the shifted array back to the cache.
+    // Now check how we should handle the cache.
     if (responses.length === 0) {
-      // If the array is empty, just remove it so we don't need an additional check when reading.
+      // The array is empty, so delete the item from the cache.
       cache.deletePendingSign(orderRef);
     } else {
+      // There are still responses left to send, so write them to the cache.
       cache.setPendingSign(orderRef, responses);
     }
   } else {
