@@ -108,3 +108,6 @@ data/bankid/*
 !data/bankid/README.md
 data/tls/*
 !data/tls/README.md
+
+# Misc rubbish
+**/.DS_Store
