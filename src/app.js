@@ -14,6 +14,7 @@ const httpsOptions = {
   cert: await fs.readFile('data/tls/server.crt', { encoding: 'utf8' }),
   // Require client certificates.
   requestCert: true,
+  rejectUnauthorized: true,
   // Trust the supplied or generated client CA certificate.
   ca: [await fs.readFile('data/tls/client-ca.crt', { encoding: 'utf8' })],
 };
