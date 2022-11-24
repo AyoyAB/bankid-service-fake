@@ -1,7 +1,6 @@
 import { X509Certificate } from 'node:crypto';
-import fs from 'node:fs/promises';
 
-import * as signature from './signature';
+import * as signedData from './signed-data';
 
 // NB: This is the "official" test certificate from the BankID web site.
 const tlsClientCertData = `-----BEGIN CERTIFICATE-----
@@ -42,7 +41,7 @@ describe('createUsrVisibleDataElement', () => {
   test('Request without visible data should return empty element', () => {
     const request = {};
 
-    const element = signature.createUsrVisibleDataElement(request);
+    const element = signedData.createUsrVisibleDataElement(request);
 
     expect(element).toBe('');
   });
@@ -52,7 +51,7 @@ describe('createUsrVisibleDataElement', () => {
       userVisibleData: 'data',
     };
 
-    const element = signature.createUsrVisibleDataElement(request);
+    const element = signedData.createUsrVisibleDataElement(request);
 
     expect(element).toBe(
       '<usrVisibleData charset="UTF-8" visible="wysiwys">data</usrVisibleData>'
@@ -65,7 +64,7 @@ describe('createUsrVisibleDataElement', () => {
       userVisibleDataFormat: 'format',
     };
 
-    const element = signature.createUsrVisibleDataElement(request);
+    const element = signedData.createUsrVisibleDataElement(request);
 
     expect(element).toBe(
       '<usrVisibleData charset="UTF-8" format="format" visible="wysiwys">data</usrVisibleData>'
@@ -77,7 +76,7 @@ describe('createUsrNonVisibleDataElement', () => {
   test('Request without non-visible data should return empty element', () => {
     const request = {};
 
-    const element = signature.createUsrNonVisibleDataElement(request);
+    const element = signedData.createUsrNonVisibleDataElement(request);
 
     expect(element).toBe('');
   });
@@ -87,7 +86,7 @@ describe('createUsrNonVisibleDataElement', () => {
       userNonVisibleData: 'data',
     };
 
-    const element = signature.createUsrNonVisibleDataElement(request);
+    const element = signedData.createUsrNonVisibleDataElement(request);
 
     expect(element).toBe('<usrNonVisibleData>data</usrNonVisibleData>');
   });
@@ -103,7 +102,7 @@ describe('createSrvInfoElement', () => {
       `^<srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo>$`
     );
 
-    const element = signature.createSrvInfoElement(tlsClientCert);
+    const element = signedData.createSrvInfoElement(tlsClientCert);
 
     expect(element).toMatch(regExp);
   });
@@ -113,7 +112,7 @@ describe('createRequirementElement', () => {
   test('should correctly encode an empty requirement', () => {
     const requirement = {};
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe('<requirement></requirement>');
   });
@@ -123,7 +122,7 @@ describe('createRequirementElement', () => {
       allowFingerprint: false,
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>AllowFingerprint</type><value>no</value></condition></requirement>'
@@ -135,7 +134,7 @@ describe('createRequirementElement', () => {
       allowFingerprint: true,
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>AllowFingerprint</type><value>yes</value></condition></requirement>'
@@ -147,7 +146,7 @@ describe('createRequirementElement', () => {
       certificatePolicies: [],
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe('<requirement></requirement>');
   });
@@ -157,7 +156,7 @@ describe('createRequirementElement', () => {
       certificatePolicies: ['1.2.3.4.5'],
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>CertificatePolicies</type><value>1.2.3.4.5</value></condition></requirement>'
@@ -169,7 +168,7 @@ describe('createRequirementElement', () => {
       certificatePolicies: ['1.2.3.4.5', '6.7.8.9.0'],
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>CertificatePolicies</type><value>1.2.3.4.5,6.7.8.9.0</value></condition></requirement>'
@@ -181,7 +180,7 @@ describe('createRequirementElement', () => {
       issuerCn: 'issuer',
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>IssuerCn</type><value>issuer</value></condition></requirement>'
@@ -193,7 +192,7 @@ describe('createRequirementElement', () => {
       tokenStartRequired: false,
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>TokenStartRequired</type><value>no</value></condition></requirement>'
@@ -205,7 +204,7 @@ describe('createRequirementElement', () => {
       tokenStartRequired: true,
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>TokenStartRequired</type><value>yes</value></condition></requirement>'
@@ -218,7 +217,7 @@ describe('createRequirementElement', () => {
       certificatePolicies: ['1.2.3.4.5'],
     };
 
-    const element = signature.createRequirementElement(requirement);
+    const element = signedData.createRequirementElement(requirement);
 
     expect(element).toBe(
       '<requirement><condition><type>AllowFingerprint</type><value>yes</value></condition><condition><type>CertificatePolicies</type><value>1.2.3.4.5</value></condition></requirement>'
@@ -228,14 +227,14 @@ describe('createRequirementElement', () => {
 
 describe('createEnvElement', () => {
   test('should correctly encode a simple mobile request', () => {
-    const client = signature.Client.IOS_14_6;
+    const client = signedData.Client.IOS_14_6;
     const requirement = {};
 
     const encodedType = b64enc(client.type);
     const encodedVersion = b64enc(client.version);
     const encodedUhi = b64enc(client.uhi);
 
-    const element = signature.createEnvElement(client, requirement);
+    const element = signedData.createEnvElement(client, requirement);
 
     expect(element).toBe(
       `<env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement></requirement><uauth>pw</uauth></ai></env>`
@@ -243,7 +242,7 @@ describe('createEnvElement', () => {
   });
 
   test('should correctly encode a more complex desktop request', () => {
-    const client = signature.Client.OS_X_12_5;
+    const client = signedData.Client.OS_X_12_5;
     const requirement = {
       allowFingerprint: true,
       certificatePolicies: ['1.2.3.4.5'],
@@ -253,7 +252,7 @@ describe('createEnvElement', () => {
     const encodedVersion = b64enc(client.version);
     const encodedUhi = b64enc(client.uhi);
 
-    const element = signature.createEnvElement(client, requirement);
+    const element = signedData.createEnvElement(client, requirement);
 
     expect(element).toBe(
       `<env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement><condition><type>AllowFingerprint</type><value>yes</value></condition><condition><type>CertificatePolicies</type><value>1.2.3.4.5</value></condition></requirement><uauth>pw</uauth></ai></env>`
@@ -263,7 +262,7 @@ describe('createEnvElement', () => {
 
 describe('createClientInfoElement', () => {
   test('should correctly encode a simple mobile auth request', () => {
-    const client = signature.Client.IOS_14_6;
+    const client = signedData.Client.IOS_14_6;
     const requirement = {};
     const funcId = 'Identification';
 
@@ -272,7 +271,7 @@ describe('createClientInfoElement', () => {
     const encodedUhi = b64enc(client.uhi);
     const encodedOsVersion = b64enc(client.osVersion);
 
-    const element = signature.createClientInfoElement(
+    const element = signedData.createClientInfoElement(
       client,
       requirement,
       funcId
@@ -284,7 +283,7 @@ describe('createClientInfoElement', () => {
   });
 
   test('should correctly encode a more complex desktop sign request', () => {
-    const client = signature.Client.OS_X_12_5;
+    const client = signedData.Client.OS_X_12_5;
     const requirement = {
       allowFingerprint: true,
       certificatePolicies: ['1.2.3.4.5'],
@@ -296,7 +295,7 @@ describe('createClientInfoElement', () => {
     const encodedUhi = b64enc(client.uhi);
     const encodedOsVersion = b64enc(client.osVersion);
 
-    const element = signature.createClientInfoElement(
+    const element = signedData.createClientInfoElement(
       client,
       requirement,
       funcId
@@ -315,7 +314,7 @@ describe('createBankIdSignedDataElement', () => {
     };
     const cert = tlsClientCert;
     const funcId = 'Identification';
-    const client = signature.Client.IOS_14_6;
+    const client = signedData.Client.IOS_14_6;
 
     const encodedName = b64enc(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
@@ -329,7 +328,7 @@ describe('createBankIdSignedDataElement', () => {
       `^<bankIdSignedData xmlns="http://www.bankid.com/signature/v1.0.0/types" Id="bidSignedData"><srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo><clientInfo><funcId>${funcId}</funcId><version>${encodedOsVersion}</version><env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement></requirement><uauth>pw</uauth></ai></env></clientInfo></bankIdSignedData>$`
     );
 
-    const element = signature.createBankIdSignedDataElement(
+    const element = signedData.createBankIdSignedDataElement(
       request,
       cert,
       funcId,
@@ -351,7 +350,7 @@ describe('createBankIdSignedDataElement', () => {
     };
     const cert = tlsClientCert;
     const funcId = 'Signing';
-    const client = signature.Client.OS_X_12_5;
+    const client = signedData.Client.OS_X_12_5;
 
     const encodedName = b64enc(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
@@ -365,7 +364,7 @@ describe('createBankIdSignedDataElement', () => {
       `^<bankIdSignedData xmlns="http://www.bankid.com/signature/v1.0.0/types" Id="bidSignedData"><usrVisibleData charset="UTF-8" format="format" visible="wysiwys">vis-data</usrVisibleData><usrNonVisibleData>non-vis-data</usrNonVisibleData><srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo><clientInfo><funcId>${funcId}</funcId><version>${encodedOsVersion}</version><env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement><condition><type>AllowFingerprint</type><value>yes</value></condition><condition><type>CertificatePolicies</type><value>1.2.3.4.5</value></condition></requirement><uauth>pw</uauth></ai></env></clientInfo></bankIdSignedData>$`
     );
 
-    const element = signature.createBankIdSignedDataElement(
+    const element = signedData.createBankIdSignedDataElement(
       request,
       cert,
       funcId,
