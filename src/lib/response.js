@@ -54,7 +54,27 @@ export function createCancelResponse() {
  * @property {string} surname - The user's surname.
  */
 
-// TODO: Add function for creating end-user info from a test BankID.
+/**
+ * Creates a user object from the supplied end-user certificate.
+ *
+ * @param {X509Certificate} cert - The end-user certificate.
+ *
+ * @returns {User} The created object.
+ */
+export function createUserObject(cert) {
+  const subject = cert.subject;
+  const personalNumber = subject.match(/^serialNumber=(.*)$/m)[1];
+  const name = subject.match(/^CN=(.*)$/m)[1];
+  const givenName = subject.match(/^GN=(.*)$/m)[1];
+  const surname = subject.match(/^SN=(.*)$/m)[1];
+
+  return {
+    personalNumber,
+    name,
+    givenName,
+    surname,
+  };
+}
 
 /**
  * The device information returned in the completion information.
@@ -65,6 +85,19 @@ export function createCancelResponse() {
  */
 
 /**
+ * Creates a device object from the supplied IP address.
+ *
+ * @param {string} ipAddress - The device IP address.
+ *
+ * @returns {Device} The created object.
+ */
+export function createDevice(ipAddress) {
+  return {
+    ipAddress,
+  };
+}
+
+/**
  * The certificate information returned in the completion information.
  *
  * @typedef Cert
@@ -73,7 +106,22 @@ export function createCancelResponse() {
  * @property {string} notAfter -The certificate validity end date.
  */
 
-// TODO: Add function for creating certificate info from a test BankID.
+/**
+ * Creates a cert object from the supplied end-user certificate.
+ *
+ * @param {X509Certificate} cert - The end-user certificate.
+ *
+ * @returns {Cert} The created object.
+ */
+export function createCertObject(cert) {
+  const notBefore = Date.parse(cert.validFrom).toString();
+  const notAfter = Date.parse(cert.validTo).toString();
+
+  return {
+    notBefore,
+    notAfter,
+  };
+}
 
 /**
  * The completion information returned with a successful auth or sign.
@@ -87,7 +135,21 @@ export function createCancelResponse() {
  * @property {string} ocspResponse - The base64-encoded OCSP response.
  */
 
-// TODO: Add function for creating completion data from a test BankID, an IP address, a signature and an OCSP response.
+export function createCompletionData(
+  user,
+  device,
+  cert,
+  signature,
+  ocspResponse
+) {
+  return {
+    user,
+    device,
+    cert,
+    signature,
+    ocspResponse,
+  };
+}
 
 /**
  * @typedef {'failed' | 'pending' | 'complete'} Status
