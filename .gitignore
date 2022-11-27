@@ -109,5 +109,8 @@ data/bankid/*
 data/tls/*
 !data/tls/README.md
 
+# Our build
+work
+
 # Misc rubbish
 **/.DS_Store

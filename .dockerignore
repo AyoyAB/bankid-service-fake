@@ -1,4 +1,12 @@
-.git
+**/.DS_Store
+**/.dockerignore
+**/.editorconfig
+**/.eslintrc.json
+**/.gitignore
+**/.prettierrc
+**/.vscode
+**/.git
 data
 node_modules
+work
 Dockerfile
