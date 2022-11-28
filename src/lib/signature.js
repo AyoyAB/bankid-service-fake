@@ -1,5 +1,7 @@
 import { randomBytes } from 'node:crypto';
 
+import { base64Encode } from './base64.js';
+
 /**
  * Creates the Reference element for the bankIdSignedData element.
  *
@@ -11,7 +13,7 @@ function createSignedDataReferenceElement() {
   // Generate a 32 byte random digest.
   const digest = randomBytes(32);
 
-  const encodedDigest = Buffer.from(digest).toString('base64');
+  const encodedDigest = base64Encode(digest);
 
   return `<Reference Type="http://www.bankid.com/signature/v1.0.0/types" URI="#bidSignedData"><Transforms><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>${encodedDigest}</DigestValue></Reference>`;
 }
@@ -27,7 +29,7 @@ function createKeyInfoReferenceElement() {
   // Generate a 32 byte random digest.
   const digest = randomBytes(32);
 
-  const encodedDigest = Buffer.from(digest).toString('base64');
+  const encodedDigest = base64Encode(digest);
 
   return `<Reference URI="#bidKeyInfo"><Transforms><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>${encodedDigest}</DigestValue></Reference>`;
 }
@@ -55,7 +57,7 @@ export function createSignatureValueElement() {
   // Generate a 256 byte random signature.
   const signature = randomBytes(256);
 
-  const encodedSignature = Buffer.from(signature).toString('base64');
+  const encodedSignature = base64Encode(signature);
 
   return `<SignatureValue>${encodedSignature}</SignatureValue>`;
 }

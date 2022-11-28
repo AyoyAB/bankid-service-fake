@@ -1,5 +1,6 @@
-import { loadCertFromString } from './cert';
-import * as signature from './signature';
+import { base64Encode } from './base64.js';
+import { loadCertFromString } from './cert.js';
+import * as signature from './signature.js';
 
 // This is a test end-user BankID certificate.
 const endUserCertData = `-----BEGIN CERTIFICATE-----
@@ -138,7 +139,7 @@ describe('createSignatureValueElement', () => {
 
 describe('createKeyInfoElement', () => {
   test('should correctly encode a single certificate', () => {
-    const encodedEndUserCert = b64enc(endUserCert.raw);
+    const encodedEndUserCert = base64Encode(endUserCert.raw);
 
     const element = signature.createKeyInfoElement([endUserCert]);
 
@@ -148,9 +149,9 @@ describe('createKeyInfoElement', () => {
   });
 
   test('should correctly encode multiple certificates', () => {
-    const encodedEndUserCert = b64enc(endUserCert.raw);
-    const encodedCustomerCaCert = b64enc(bankCustomerCaCert.raw);
-    const encodedIntermediateCaCert = b64enc(bankIntermediateCaCert.raw);
+    const encodedEndUserCert = base64Encode(endUserCert.raw);
+    const encodedCustomerCaCert = base64Encode(bankCustomerCaCert.raw);
+    const encodedIntermediateCaCert = base64Encode(bankIntermediateCaCert.raw);
 
     const certs = [endUserCert, bankCustomerCaCert, bankIntermediateCaCert];
 
@@ -177,8 +178,3 @@ describe('createSignatureElement', () => {
     expect(element).toMatch(regExp);
   });
 });
-
-// Base64 encoding helper.
-function b64enc(val) {
-  return Buffer.from(val).toString('base64');
-}

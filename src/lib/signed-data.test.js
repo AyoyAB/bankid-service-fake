@@ -1,5 +1,6 @@
-import { loadCertFromString } from './cert';
-import * as signedData from './signed-data';
+import { base64Encode } from './base64.js';
+import { loadCertFromString } from './cert.js';
+import * as signedData from './signed-data.js';
 
 // Test client data.
 const clients = {
@@ -110,10 +111,10 @@ describe('createUsrNonVisibleDataElement', () => {
 
 describe('createSrvInfoElement', () => {
   test('should correctly encode the element', () => {
-    const encodedName = b64enc(
+    const encodedName = base64Encode(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
     );
-    const encodedDisplayName = b64enc('Test av BankID');
+    const encodedDisplayName = base64Encode('Test av BankID');
     const regExp = new RegExp(
       `^<srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo>$`
     );
@@ -246,9 +247,9 @@ describe('createEnvElement', () => {
     const client = clients.IOS_14_6;
     const requirement = {};
 
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
 
     const element = signedData.createEnvElement(client, requirement);
 
@@ -264,9 +265,9 @@ describe('createEnvElement', () => {
       certificatePolicies: ['1.2.3.4.5'],
     };
 
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
 
     const element = signedData.createEnvElement(client, requirement);
 
@@ -282,10 +283,10 @@ describe('createClientInfoElement', () => {
     const requirement = {};
     const funcId = 'Identification';
 
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
-    const encodedOsVersion = b64enc(client.osVersion);
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
+    const encodedOsVersion = base64Encode(client.osVersion);
 
     const element = signedData.createClientInfoElement(
       client,
@@ -306,10 +307,10 @@ describe('createClientInfoElement', () => {
     };
     const funcId = 'Signing';
 
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
-    const encodedOsVersion = b64enc(client.osVersion);
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
+    const encodedOsVersion = base64Encode(client.osVersion);
 
     const element = signedData.createClientInfoElement(
       client,
@@ -332,14 +333,14 @@ describe('createBankIdSignedDataElement', () => {
     const funcId = 'Identification';
     const client = clients.IOS_14_6;
 
-    const encodedName = b64enc(
+    const encodedName = base64Encode(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
     );
-    const encodedDisplayName = b64enc('Test av BankID');
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
-    const encodedOsVersion = b64enc(client.osVersion);
+    const encodedDisplayName = base64Encode('Test av BankID');
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
+    const encodedOsVersion = base64Encode(client.osVersion);
     const regExp = new RegExp(
       `^<bankIdSignedData xmlns="http://www.bankid.com/signature/v1.0.0/types" Id="bidSignedData"><srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo><clientInfo><funcId>${funcId}</funcId><version>${encodedOsVersion}</version><env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement></requirement><uauth>pw</uauth></ai></env></clientInfo></bankIdSignedData>$`
     );
@@ -368,14 +369,14 @@ describe('createBankIdSignedDataElement', () => {
     const funcId = 'Signing';
     const client = clients.OS_X_12_5;
 
-    const encodedName = b64enc(
+    const encodedName = base64Encode(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
     );
-    const encodedDisplayName = b64enc('Test av BankID');
-    const encodedType = b64enc(client.type);
-    const encodedVersion = b64enc(client.version);
-    const encodedUhi = b64enc(client.uhi);
-    const encodedOsVersion = b64enc(client.osVersion);
+    const encodedDisplayName = base64Encode('Test av BankID');
+    const encodedType = base64Encode(client.type);
+    const encodedVersion = base64Encode(client.version);
+    const encodedUhi = base64Encode(client.uhi);
+    const encodedOsVersion = base64Encode(client.osVersion);
     const regExp = new RegExp(
       `^<bankIdSignedData xmlns="http://www.bankid.com/signature/v1.0.0/types" Id="bidSignedData"><usrVisibleData charset="UTF-8" format="format" visible="wysiwys">vis-data</usrVisibleData><usrNonVisibleData>non-vis-data</usrNonVisibleData><srvInfo><name>${encodedName}</name><nonce>[^<]+</nonce><displayName>${encodedDisplayName}</displayName></srvInfo><clientInfo><funcId>${funcId}</funcId><version>${encodedOsVersion}</version><env><ai><type>${encodedType}</type><deviceInfo>${encodedVersion}</deviceInfo><uhi>${encodedUhi}</uhi><fsib>0</fsib><utb>cs1</utb><requirement><condition><type>AllowFingerprint</type><value>yes</value></condition><condition><type>CertificatePolicies</type><value>1.2.3.4.5</value></condition></requirement><uauth>pw</uauth></ai></env></clientInfo></bankIdSignedData>$`
     );
@@ -390,8 +391,3 @@ describe('createBankIdSignedDataElement', () => {
     expect(element).toMatch(regExp);
   });
 });
-
-// Base64 encoding helper.
-function b64enc(val) {
-  return Buffer.from(val).toString('base64');
-}

@@ -1,5 +1,7 @@
 import { randomBytes } from 'node:crypto';
 
+import { base64Encode } from './base64.js';
+
 /**
  * Creates the optional usrVisibleData signed data element.
  *
@@ -62,9 +64,9 @@ export function createSrvInfoElement(cert) {
   const displayName = name.match(/,name=([^,]+),/);
 
   // Encode the respective elements.
-  const encodedName = Buffer.from(name).toString('base64');
-  const encodedNonce = Buffer.from(nonce).toString('base64');
-  const encodedDisplayName = Buffer.from(displayName[1]).toString('base64');
+  const encodedName = base64Encode(name);
+  const encodedNonce = base64Encode(nonce);
+  const encodedDisplayName = base64Encode(displayName[1]);
 
   return `<srvInfo><name>${encodedName}</name><nonce>${encodedNonce}</nonce><displayName>${encodedDisplayName}</displayName></srvInfo>`;
 }
@@ -122,9 +124,9 @@ export function createRequirementElement(requirement) {
  */
 export function createEnvElement(client, requirement) {
   // Encode the client metadata.
-  const encodedType = Buffer.from(client.type).toString('base64');
-  const encodedVersion = Buffer.from(client.version).toString('base64');
-  const encodedUhi = Buffer.from(client.uhi).toString('base64');
+  const encodedType = base64Encode(client.type);
+  const encodedVersion = base64Encode(client.version);
+  const encodedUhi = base64Encode(client.uhi);
 
   // Create the requirement element.
   const requirements = createRequirementElement(requirement);
@@ -143,7 +145,7 @@ export function createEnvElement(client, requirement) {
  */
 export function createClientInfoElement(client, requirement, funcId) {
   // Encode the client metadata.
-  const encodedVersion = Buffer.from(client.osVersion).toString('base64');
+  const encodedVersion = base64Encode(client.osVersion);
 
   // Create the env element.
   const envElement = createEnvElement(client, requirement);
