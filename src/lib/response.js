@@ -1,6 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
 import { base64Encode } from './base64.js';
+import { createSignatureElement } from './signature.js';
+import { createBankIdSignedDataElement } from './signed-data.js';
 
 /**
  * The respone returned from an auth or sign call.
@@ -205,11 +207,40 @@ export function createPendingCollectResponse(orderRef, hintCode) {
  * Creates a completed collect JSON response body.
  *
  * @param {string} orderRef - The order reference.
- * @param {CompletionData} completionData -  The order completion information.
+ * @param {AuthSignRequest} req - The auth or sign request.
+ * @param {'Identification' | 'Signing'} funcId - The function that was called.
+ * @param {X509Certificate[]} caCerts - The CA certificates to include.
+ * @param {X509Certificate} clientCert - The relying party certificate.
+ * @param {X509Certificate} userCert - The end-user certificate.
+ * @param {Client} client - The client.
+ * @property {string} ipAddress - The device ip address.
  *
  * @returns {CollectResponse} The created response.
  */
-export function createCompleteCollectResponse(orderRef, completionData) {
+export function createCompleteCollectResponse(
+  orderRef,
+  req,
+  funcId,
+  caCerts,
+  clientCert,
+  userCert,
+  client,
+  ipAddress
+) {
+  // Create the inner signed data element.
+  const signedData = createBankIdSignedDataElement(
+    req,
+    clientCert,
+    funcId,
+    client
+  );
+
+  // Create the xml signature.
+  const signature = createSignatureElement([userCert, ...caCerts], signedData);
+
+  // Create the completion data.
+  const completionData = createCompletionData(userCert, ipAddress, signature);
+
   return { status: 'complete', orderRef, completionData };
 }
 
