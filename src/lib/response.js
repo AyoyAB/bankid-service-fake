@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
+import { base64Encode } from './base64.js';
+
 /**
  * The respone returned from an auth or sign call.
  *
@@ -135,15 +137,16 @@ export const cannedOcspResponse =
  * @type {object}
  * @param {X509Certificate} cert - The end-user certificate.
  * @property {string} ipAddress - The device ip address.
- * @property {string} signature - The base64-encoded XML signature.
+ * @property {string} xmlSignature - The XML signature string.
  *
  * @returns {CompletionData} The created object.
  */
 
-export function createCompletionData(cert, ipAddress, signature) {
+export function createCompletionData(cert, ipAddress, xmlSignature) {
   const userInfo = createUserObject(cert);
   const deviceInfo = createDevice(ipAddress);
   const certInfo = createCertObject(cert);
+  const signature = base64Encode(xmlSignature);
   const ocspResponse = cannedOcspResponse;
 
   return {

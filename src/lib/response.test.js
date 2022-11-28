@@ -98,7 +98,7 @@ describe('createCompletionData', () => {
         notBefore: '1669244400000',
         notAfter: '1700866799000',
       },
-      signature: 'signature',
+      signature: 'c2lnbmF0dXJl', // "signature" base64-encoded.
       ocspResponse: response.cannedOcspResponse,
     };
 
