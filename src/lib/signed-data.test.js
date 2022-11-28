@@ -1,5 +1,4 @@
-import { X509Certificate } from 'node:crypto';
-
+import { loadCertFromString } from './cert';
 import * as signedData from './signed-data';
 
 // Test client data.
@@ -51,7 +50,7 @@ s+sQNZbk5C1pxkLLwzu815tKg77Om4Nwbi+bgDvI
 
 var tlsClientCert;
 beforeAll(async () => {
-  tlsClientCert = new X509Certificate(Buffer.from(tlsClientCertData));
+  tlsClientCert = loadCertFromString(tlsClientCertData);
 });
 
 describe('createUsrVisibleDataElement', () => {

@@ -1,5 +1,4 @@
-import { X509Certificate } from 'node:crypto';
-
+import { loadCertFromString } from './cert';
 import * as signature from './signature';
 
 // This is a test end-user BankID certificate.
@@ -109,9 +108,9 @@ TP2fCNsozQ==
 
 var endUserCert, bankCustomerCaCert, bankIntermediateCaCert;
 beforeAll(async () => {
-  endUserCert = certFromPem(endUserCertData);
-  bankCustomerCaCert = certFromPem(bankCustomerCaCertData);
-  bankIntermediateCaCert = certFromPem(bankIntermediateCaCertData);
+  endUserCert = loadCertFromString(endUserCertData);
+  bankCustomerCaCert = loadCertFromString(bankCustomerCaCertData);
+  bankIntermediateCaCert = loadCertFromString(bankIntermediateCaCertData);
 });
 
 describe('createSignedInfoElement', () => {
@@ -182,9 +181,4 @@ describe('createSignatureElement', () => {
 // Base64 encoding helper.
 function b64enc(val) {
   return Buffer.from(val).toString('base64');
-}
-
-// Certificate loading helper.
-function certFromPem(pemString) {
-  return new X509Certificate(Buffer.from(pemString));
 }

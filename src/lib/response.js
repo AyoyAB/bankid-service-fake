@@ -132,6 +132,8 @@ export function createCertObject(cert) {
  * @property {string} ipAddress - The device ip address.
  * @property {string} signature - The base64-encoded XML signature.
  * @property {string} ocspResponse - The base64-encoded OCSP response.
+ *
+ * @returns {CompletionData} The created object.
  */
 
 export function createCompletionData(cert, ipAddress, signature, ocspResponse) {

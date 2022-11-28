@@ -1,5 +1,4 @@
-import { X509Certificate } from 'node:crypto';
-
+import { loadCertFromString } from './cert';
 import * as response from './response';
 
 // This is a test end-user BankID certificate.
@@ -37,7 +36,7 @@ soWim8OdJufj42qHkAJ9syBU
 
 var endUserCert;
 beforeAll(async () => {
-  endUserCert = certFromPem(endUserCertData);
+  endUserCert = loadCertFromString(endUserCertData);
 });
 
 describe('createUserObject', () => {
@@ -113,8 +112,3 @@ describe('createCompletionData', () => {
     expect(actual).toEqual(expected);
   });
 });
-
-// Certificate loading helper.
-function certFromPem(pemString) {
-  return new X509Certificate(Buffer.from(pemString));
-}
