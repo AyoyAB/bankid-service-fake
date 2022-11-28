@@ -99,14 +99,13 @@ describe('createCompletionData', () => {
         notAfter: '1700866799000',
       },
       signature: 'signature',
-      ocspResponse: 'ocsp',
+      ocspResponse: response.cannedOcspResponse,
     };
 
     const actual = response.createCompletionData(
       endUserCert,
       '192.168.0.1',
-      'signature',
-      'ocsp'
+      'signature'
     );
 
     expect(actual).toEqual(expected);
