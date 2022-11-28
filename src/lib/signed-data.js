@@ -41,7 +41,7 @@ export function createUsrNonVisibleDataElement(req) {
 /**
  * Creates the srvInfo signed data element.
  *
- * @param {X509Certificate} cert - The TLS client certificate.
+ * @param {X509Certificate} cert - The relying party certificate.
  *
  * @returns {string} The created element.
  */
@@ -79,7 +79,7 @@ export function createSrvInfoElement(cert) {
 export function createRequirementElement(requirement) {
   // Optionally include an AllowFingerprint element.
   let allowFingerprintElement = '';
-  if (requirement.allowFingerprint != undefined) {
+  if (requirement && requirement.allowFingerprint != undefined) {
     const value = requirement.allowFingerprint ? 'yes' : 'no';
 
     allowFingerprintElement = `<condition><type>AllowFingerprint</type><value>${value}</value></condition>`;
@@ -88,6 +88,7 @@ export function createRequirementElement(requirement) {
   // Optionally include a CertificatePolicies element.
   let certificatePoliciesElement = '';
   if (
+    requirement &&
     requirement.certificatePolicies != undefined &&
     requirement.certificatePolicies.length > 0
   ) {
@@ -96,13 +97,13 @@ export function createRequirementElement(requirement) {
 
   // Optionally include an IssuerCn element.
   let issuerCnElement = '';
-  if (requirement.issuerCn != undefined) {
+  if (requirement && requirement.issuerCn != undefined) {
     issuerCnElement = `<condition><type>IssuerCn</type><value>${requirement.issuerCn}</value></condition>`;
   }
 
   // Optionally include a TokenStartRequired element.
   let tokenStartRequiredElement = '';
-  if (requirement.tokenStartRequired != undefined) {
+  if (requirement && requirement.tokenStartRequired != undefined) {
     const value = requirement.tokenStartRequired ? 'yes' : 'no';
 
     tokenStartRequiredElement = `<condition><type>TokenStartRequired</type><value>${value}</value></condition>`;
@@ -110,25 +111,6 @@ export function createRequirementElement(requirement) {
 
   return `<requirement>${allowFingerprintElement}${certificatePoliciesElement}${issuerCnElement}${tokenStartRequiredElement}</requirement>`;
 }
-
-/**
- * Sample clients.
- */
-export const Client = {
-  IOS_14_6: {
-    type: 'IOS',
-    version: '14.6',
-    uhi: randomBytes(21).toString('base64'),
-    osVersion: '7.28.0',
-  },
-  OS_X_12_5: {
-    type: 'OS_X',
-    version: '12.5',
-    uhi: randomBytes(21).toString('base64'),
-    osVersion:
-      'Personal=7.13.0.4&BankID_exe=7.13.0.4&BISP=7.13.0.4&platform=macosx&os_version=12.5&display_version=&uhi=gi9/QWGGDjuUQBi0SEGBtjywtteJ&legacyuhi=gi9/QWGGDjuUQBi0SEGBtjywtteJ&best_before=1667066973&',
-  },
-};
 
 /**
  * Creates the env signed data element.
@@ -188,5 +170,3 @@ export function createBankIdSignedDataElement(req, cert, funcId, client) {
 
   return `<bankIdSignedData xmlns="http://www.bankid.com/signature/v1.0.0/types" Id="bidSignedData">${usrVisibleData}${usrNonVisibleData}${srvInfo}${clientInfo}</bankIdSignedData>`;
 }
-
-// TODO: Create the XMLDSIG itself.

@@ -2,6 +2,23 @@ import { X509Certificate } from 'node:crypto';
 
 import * as signedData from './signed-data';
 
+// Test client data.
+const clients = {
+  IOS_14_6: {
+    type: 'IOS',
+    version: '14.6',
+    uhi: 'GI75maOnOYyg0bCbup2JK59oZH6p',
+    osVersion: '7.28.0',
+  },
+  OS_X_12_5: {
+    type: 'OS_X',
+    version: '12.5',
+    uhi: '7ApoZbybFpDz6BGzUo+0A9qXCsxx',
+    osVersion:
+      'Personal=7.13.0.4&BankID_exe=7.13.0.4&BISP=7.13.0.4&platform=macosx&os_version=12.5&display_version=&uhi=7ApoZbybFpDz6BGzUo+0A9qXCsxx&legacyuhi=7ApoZbybFpDz6BGzUo+0A9qXCsxx&best_before=1667066973&',
+  },
+};
+
 // NB: This is the "official" test certificate from the BankID web site.
 const tlsClientCertData = `-----BEGIN CERTIFICATE-----
 MIIEyjCCArKgAwIBAgIIMLbIMaRHjMMwDQYJKoZIhvcNAQELBQAwcTELMAkGA1UE
@@ -227,7 +244,7 @@ describe('createRequirementElement', () => {
 
 describe('createEnvElement', () => {
   test('should correctly encode a simple mobile request', () => {
-    const client = signedData.Client.IOS_14_6;
+    const client = clients.IOS_14_6;
     const requirement = {};
 
     const encodedType = b64enc(client.type);
@@ -242,7 +259,7 @@ describe('createEnvElement', () => {
   });
 
   test('should correctly encode a more complex desktop request', () => {
-    const client = signedData.Client.OS_X_12_5;
+    const client = clients.OS_X_12_5;
     const requirement = {
       allowFingerprint: true,
       certificatePolicies: ['1.2.3.4.5'],
@@ -262,7 +279,7 @@ describe('createEnvElement', () => {
 
 describe('createClientInfoElement', () => {
   test('should correctly encode a simple mobile auth request', () => {
-    const client = signedData.Client.IOS_14_6;
+    const client = clients.IOS_14_6;
     const requirement = {};
     const funcId = 'Identification';
 
@@ -283,7 +300,7 @@ describe('createClientInfoElement', () => {
   });
 
   test('should correctly encode a more complex desktop sign request', () => {
-    const client = signedData.Client.OS_X_12_5;
+    const client = clients.OS_X_12_5;
     const requirement = {
       allowFingerprint: true,
       certificatePolicies: ['1.2.3.4.5'],
@@ -314,7 +331,7 @@ describe('createBankIdSignedDataElement', () => {
     };
     const cert = tlsClientCert;
     const funcId = 'Identification';
-    const client = signedData.Client.IOS_14_6;
+    const client = clients.IOS_14_6;
 
     const encodedName = b64enc(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'
@@ -350,7 +367,7 @@ describe('createBankIdSignedDataElement', () => {
     };
     const cert = tlsClientCert;
     const funcId = 'Signing';
-    const client = signedData.Client.OS_X_12_5;
+    const client = clients.OS_X_12_5;
 
     const encodedName = b64enc(
       'cn=FP Testcert 4,name=Test av BankID,serialNumber=5566304928,o=Testbank A AB (publ),c=SE'

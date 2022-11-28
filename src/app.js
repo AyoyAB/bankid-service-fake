@@ -23,6 +23,6 @@ const httpsOptions = {
   ca: [await fs.readFile(config.tls.caFile, { encoding: 'utf8' })],
 };
 
-https.createServer(httpsOptions, app.callback()).listen(config.port);
+https.createServer(httpsOptions, app.callback()).listen(config.tls.port);
 
-console.log(`Listening on port ${config.port}.`);
+console.log(`Listening on port ${config.tls.port}.`);
