@@ -101,7 +101,7 @@ export function createKeyInfoElement(certs) {
  * @param {X509Certificate[]} certs - The certificates to include.
  * @param {string} bankIdSignedDataElement - The bankIdSignedData element to include.
  *
- * @returns The created element.
+ * @returns {string} The created element.
  */
 export function createSignatureElement(certs, bankIdSignedDataElement) {
   const signedInfoElement = createSignedInfoElement();
