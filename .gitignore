@@ -104,8 +104,6 @@ dist
 .tern-port
 
 # Our test certificates
-data/bankid/*
-!data/bankid/README.md
 data/tls/*
 !data/tls/README.md
 
