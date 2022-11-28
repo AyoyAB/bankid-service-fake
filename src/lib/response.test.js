@@ -83,6 +83,37 @@ describe('createCertObject', () => {
   });
 });
 
+describe('createCompletionData', () => {
+  test('should correctly encode the completion data', () => {
+    const expected = {
+      userInfo: {
+        personalNumber: '200211242383',
+        name: 'Test Person',
+        givenName: 'Test',
+        surname: 'Person',
+      },
+      deviceInfo: {
+        ipAddress: '192.168.0.1',
+      },
+      certInfo: {
+        notBefore: '1669244400000',
+        notAfter: '1700866799000',
+      },
+      signature: 'signature',
+      ocspResponse: 'ocsp',
+    };
+
+    const actual = response.createCompletionData(
+      endUserCert,
+      '192.168.0.1',
+      'signature',
+      'ocsp'
+    );
+
+    expect(actual).toEqual(expected);
+  });
+});
+
 // Certificate loading helper.
 function certFromPem(pemString) {
   return new X509Certificate(Buffer.from(pemString));

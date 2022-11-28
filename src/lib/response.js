@@ -128,24 +128,21 @@ export function createCertObject(cert) {
  *
  * @typedef CompletionData
  * @type {object}
- * @property {User} user - The end user information.
- * @property {Device} device - The device information.
- * @property {Cert} cert - The user certificate information.
+ * @param {X509Certificate} cert - The end-user certificate.
+ * @property {string} ipAddress - The device ip address.
  * @property {string} signature - The base64-encoded XML signature.
  * @property {string} ocspResponse - The base64-encoded OCSP response.
  */
 
-export function createCompletionData(
-  user,
-  device,
-  cert,
-  signature,
-  ocspResponse
-) {
+export function createCompletionData(cert, ipAddress, signature, ocspResponse) {
+  const userInfo = createUserObject(cert);
+  const deviceInfo = createDevice(ipAddress);
+  const certInfo = createCertObject(cert);
+
   return {
-    user,
-    device,
-    cert,
+    userInfo,
+    deviceInfo,
+    certInfo,
     signature,
     ocspResponse,
   };
