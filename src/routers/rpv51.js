@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import koaBody from 'koa-body';
+import { koaBody } from 'koa-body';
 
 import createDispatcher from '../dispatcher/index.js';
 import createAuthHandler from '../handlers/rpv51/auth.js';
@@ -11,9 +11,10 @@ const dispatcher = createDispatcher();
 
 const rpv51 = new Router();
 
-rpv51.post('/auth', koaBody(), createAuthHandler(dispatcher));
-rpv51.post('/sign', koaBody(), createSignHandler(dispatcher));
-rpv51.post('/collect', koaBody(), collectHandler);
-rpv51.post('/cancel', koaBody(), cancelHandler);
+rpv51.use(koaBody());
+rpv51.post('/auth', createAuthHandler(dispatcher));
+rpv51.post('/sign', createSignHandler(dispatcher));
+rpv51.post('/collect', collectHandler);
+rpv51.post('/cancel', cancelHandler);
 
 export default rpv51;
