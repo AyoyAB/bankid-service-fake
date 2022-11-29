@@ -1,2 +1,3 @@
-# bankid-service-stub
-BankID web service stub intended for use during relying party testing
+# bankid-service-fake
+
+BankID web service fake intended for use during relying party testing
