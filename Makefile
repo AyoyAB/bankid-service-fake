@@ -62,5 +62,5 @@ DAYS=365
 %/card-bankid.crt: %/card-bankid.csr %/openssl-ext-card-bankid.cnf %/bankid-ca.crt
 	openssl x509 -req -in $*/card-bankid.csr -sha256 -out $@ -days $(DAYS) -CA $*/bankid-ca.crt -CAkey $*/bankid-ca.key -extfile $*/openssl-ext-card-bankid.cnf -CAcreateserial
 
-.PHONY: certificates
-certificates: data/tls/client-ca.crt data/tls/server-ca.crt data/tls/client.crt data/tls/server.crt
+.PHONY: certs
+certs: data/tls/client-ca.crt data/tls/server-ca.crt data/tls/client.crt data/tls/server.crt

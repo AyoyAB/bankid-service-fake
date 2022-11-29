@@ -1,0 +1,24 @@
+contents:
+  repositories:
+    - https://dl-cdn.alpinelinux.org/alpine/edge/main
+    - https://dl-cdn.alpinelinux.org/alpine/edge/community
+    - '@local /work/packages'
+  packages:
+    - alpine-baselayout-data
+    - tini
+    - bankid-service-fake@local
+
+accounts:
+  groups:
+    - groupname: nonroot
+      gid: 65532
+  users:
+    - username: nonroot
+      uid: 65532
+      gid: 65532
+  run-as: 65532
+
+entrypoint:
+  command: tini -- node ./src/app.js
+
+work-dir: /usr/share/webapps/bankid-service-fake

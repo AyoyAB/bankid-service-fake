@@ -108,7 +108,11 @@ data/tls/*
 !data/tls/README.md
 
 # Our build
-work
+packages/
+melange.rsa
+melange.rsa.pub
+*.tar
+sbom-*
 
 # Misc rubbish
 **/.DS_Store
