@@ -1,9 +1,9 @@
-import { X509Certificate } from 'node:crypto';
-import fs from 'node:fs/promises';
-
 /**
  * @file Holds certificate loading and parsing code.
  */
+
+import { X509Certificate } from 'node:crypto';
+import fs from 'node:fs';
 
 /**
  * Loads a certificate from file.
@@ -12,10 +12,21 @@ import fs from 'node:fs/promises';
  *
  * @returns {X509Certificate} The loaded certificate.
  */
-export async function loadCertFromFile(file) {
-  const buf = await fs.readFile(file, { encoding: 'utf8' });
+export function loadCertFromFile(file) {
+  const buf = fs.readFileSync(file, { encoding: 'utf8' });
 
   return new X509Certificate(buf);
+}
+
+/**
+ * Loads certificates from an array of files.
+ *
+ * @param {string[]} files - Paths to the files to load.
+ *
+ * @returns {X509Certificate[]} The loaded certificates.
+ */
+export function loadCertsFromFile(files) {
+  return files.map((file) => loadCertFromFile(file));
 }
 
 /**
