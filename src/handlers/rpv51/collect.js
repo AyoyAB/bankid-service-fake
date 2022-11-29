@@ -2,8 +2,8 @@ import * as cache from '../../lib/cache.js';
 import * as request from '../../lib/request.js';
 import * as response from '../../lib/response.js';
 
-async function collectHandler(ctx, next) {
-  // Make sure we have a client certificate..
+export default async function collectHandler(ctx, next) {
+  // Make sure we have a client certificate.
   ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
 
   // Extract the order reference from the request.
@@ -52,5 +52,3 @@ async function collectHandler(ctx, next) {
 
   await next();
 }
-
-export default collectHandler;

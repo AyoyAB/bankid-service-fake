@@ -1,26 +1,21 @@
-import * as cache from '../../lib/cache.js';
-import * as response from '../../lib/response.js';
+import { parseAuthSignRequest } from '../../lib/request.js';
 
-async function signHandler(ctx, next) {
-  // Make sure we have a client certificate..
-  ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
+export default function createSignHandler(dispatcher) {
+  const dispatch = dispatcher.sign;
 
-  // Generate a new order reference for this signature.
-  const orderRef = cache.createOrderRef();
+  return async function (ctx, next) {
+    // Make sure we have a client certificate.
+    ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
 
-  // Default to letting this transaction expire after a few collects.
-  const collectResponses = [
-    response.createPendingCollectResponse(orderRef, 'outstandingTransaction'),
-    response.createPendingCollectResponse(orderRef, 'noClient'),
-    response.createFailedCollectResponse(orderRef, 'expiredTransaction'),
-  ];
-  cache.setPendingSign(orderRef, collectResponses);
+    // Parse the request.
+    const req = parseAuthSignRequest(ctx.request.body);
 
-  // Create a sign response from the order reference.
-  const signResponse = response.createAuthSignResponse(orderRef);
-  ctx.body = signResponse;
+    // Dispatch the request.
+    const resp = dispatch(ctx.state.clientCert, req);
 
-  await next();
+    // Set the response.
+    ctx.body = resp;
+
+    await next();
+  };
 }
-
-export default signHandler;
