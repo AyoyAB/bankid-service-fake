@@ -18,7 +18,7 @@ DAYS=365
 
 # Test TLS client certificate.
 %/client.csr: %/client.key
-	openssl req -new -key $^ -sha256 -out $@ -subj "/CN=Test TLS Client"
+	openssl req -new -key $^ -sha256 -out $@ -subj "/C=SE/O=Test Bank A/serialNumber=000000000000/name=BankID Test/CN=RP Test Cert"
 %/openssl-ext-tls-client.cnf:
 	printf "extendedKeyUsage=clientAuth\nbasicConstraints=CA:false\nsubjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer" > $@
 %/client.crt: %/client.csr %/openssl-ext-tls-client.cnf %/client-ca.crt
@@ -63,4 +63,4 @@ DAYS=365
 	openssl x509 -req -in $*/card-bankid.csr -sha256 -out $@ -days $(DAYS) -CA $*/bankid-ca.crt -CAkey $*/bankid-ca.key -extfile $*/openssl-ext-card-bankid.cnf -CAcreateserial
 
 .PHONY: certificates
-certificates: data/tls/client-ca.crt data/tls/server-ca.crt data/tls/client.crt data/tls/server.crt data/bankid/bankid-ca.crt data/bankid/mobile-bankid.crt data/bankid/file-bankid.crt data/bankid/card-bankid.crt
+certificates: data/tls/client-ca.crt data/tls/server-ca.crt data/tls/client.crt data/tls/server.crt
