@@ -152,9 +152,9 @@ export function createCompletionData(cert, ipAddress, xmlSignature) {
   const ocspResponse = cannedOcspResponse;
 
   return {
-    userInfo,
-    deviceInfo,
-    certInfo,
+    user: userInfo,
+    device: deviceInfo,
+    cert: certInfo,
     signature,
     ocspResponse,
   };
