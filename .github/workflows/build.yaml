@@ -28,6 +28,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Debug
+        run: 'tree -a'
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
