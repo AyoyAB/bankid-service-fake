@@ -1,4 +1,6 @@
 name: build
+description: |
+  Builds and optionally publishes on pushes & marges to main.
 
 on:
   push:
@@ -37,9 +39,8 @@ jobs:
       - name: Run Melange
         uses: chainguard-dev/actions/melange-build@main
         with:
-          sign-with-temporary-key: true
           config: melange.yaml
-          empty-workspace: true
+          sign-with-temporary-key: true
 
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
