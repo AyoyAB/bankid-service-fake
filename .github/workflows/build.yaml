@@ -34,7 +34,27 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Debug output
-        run: |
-          echo "::debug::Tags - ${{ steps.meta.outputs.tags }}"
-          echo "::debug::Labels - ${{ steps.meta.outputs.labels }}"
+      - name: Run Melange
+        uses: chainguard-dev/actions/melange-build@main
+        with:
+          sign-with-temporary-key: true
+          config: melange.yaml
+          empty-workspace: true
+
+      - name: Run apko publish
+        uses: chainguard-images/actions/apko-publish@main
+        # Don't publish pull request builds
+        if: ${{ github.event_name != 'pull_request' }}
+        id: apko-publish
+        with:
+          config: apko.yaml
+          tag: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
+          keyring-append: /github/workspace/melange.rsa.pub
+          image_refs: apko.images
+
+      - name: Sign the image
+        # Don't publish pull request builds
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_EXPERIMENTAL: 'true'
+        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.apko-publish.outputs.digest }}
