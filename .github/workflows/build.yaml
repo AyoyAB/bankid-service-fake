@@ -44,7 +44,7 @@ jobs:
           archs: amd64
 
       - name: Debug
-        run: 'tree -a'
+        run: 'tree'
 
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
@@ -56,7 +56,7 @@ jobs:
           tag: ${{ steps.meta.outputs.tags }}
           keyring-append: /github/workspace/melange.rsa.pub
           image_refs: apko.images
-          automount-src: ${{ github.workspace }}/packages
+          automount-src: ${{ github.workspace }}
           # Tempprarily build only amd64
           archs: amd64
 
