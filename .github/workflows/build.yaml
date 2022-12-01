@@ -42,6 +42,8 @@ jobs:
         with:
           config: melange.yaml
           sign-with-temporary-key: true
+          # Tempprarily build only amd64
+          archs: x86_64
 
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
@@ -53,6 +55,8 @@ jobs:
           tag: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
           keyring-append: /github/workspace/melange.rsa.pub
           image_refs: apko.images
+          # Tempprarily build only amd64
+          archs: x86_64
 
       - name: Sign the image
         # Don't publish pull request builds
