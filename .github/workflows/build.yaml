@@ -28,9 +28,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Debug
-        run: 'tree -a'
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
@@ -42,8 +39,12 @@ jobs:
         with:
           config: melange.yaml
           sign-with-temporary-key: true
+          repository-append: packages
           # Tempprarily build only amd64
-          archs: x86_64
+          archs: amd64
+
+      - name: Debug
+        run: 'tree -a'
 
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
@@ -56,7 +57,7 @@ jobs:
           keyring-append: /github/workspace/melange.rsa.pub
           image_refs: apko.images
           # Tempprarily build only amd64
-          archs: x86_64
+          archs: amd64
 
       - name: Sign the image
         # Don't publish pull request builds
