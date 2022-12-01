@@ -53,9 +53,10 @@ jobs:
         id: apko-publish
         with:
           config: apko.yaml
-          tag: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
+          tag: ${{ steps.meta.outputs.tags }}
           keyring-append: /github/workspace/melange.rsa.pub
           image_refs: apko.images
+          automount-src: ${{ github.workspace }}/packages
           # Tempprarily build only amd64
           archs: amd64
 
