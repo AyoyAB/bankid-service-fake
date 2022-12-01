@@ -10,7 +10,7 @@ The server can be started locally using the following command:
 $ npm run start
 
 > bankid-service-fake@0.1.0 start
-> node src/app.js
+> node source/app.js
 
 Listening on port 3000.
 ```

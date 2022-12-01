@@ -19,6 +19,6 @@ accounts:
   run-as: 65532
 
 entrypoint:
-  command: tini -- node ./src/app.js
+  command: tini -- node ./source/app.js
 
 work-dir: /usr/share/webapps/bankid-service-fake

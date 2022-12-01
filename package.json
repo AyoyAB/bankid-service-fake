@@ -8,9 +8,9 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "format": "prettier --config .prettierrc 'src/**/*.js' --write",
-    "lint": "eslint 'src/**/*.js'",
+    "start": "node source/app.js",
+    "format": "prettier --config .prettierrc 'source/**/*.js' --write",
+    "lint": "eslint 'source/**/*.js'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {

@@ -30,6 +30,6 @@ pipeline:
       APPDIR="${{targets.destdir}}/usr/share/webapps/${{package.name}}"
       mkdir -p "${APPDIR}"
       cp package.json package-lock.json "${APPDIR}"
-      cp -r src "${APPDIR}"
+      cp -r source "${APPDIR}"
       cd "${APPDIR}"
       npm install --omit=dev

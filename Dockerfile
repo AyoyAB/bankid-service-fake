@@ -38,8 +38,8 @@ ENV NODE_ENV=production
 ENV PATH=/app/node_modules/.bin:$PATH
 EXPOSE 3000
 USER 1000
-VOLUME [ "/app/data/bankid", "/app/data/tls", "/app/src/handlers/rpv51" ]
+VOLUME [ "/app/data/bankid", "/app/data/tls", "/app/source/handlers/rpv51" ]
 WORKDIR /app
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/nodejs/bin/node", "./src/app.js"]
+CMD ["/nodejs/bin/node", "./source/app.js"]
