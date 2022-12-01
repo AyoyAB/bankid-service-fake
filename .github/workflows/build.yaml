@@ -13,6 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  ARCHS: x86_64,aarch64,armv7
 
 jobs:
   build:
@@ -45,8 +46,7 @@ jobs:
         with:
           config: melange.yaml
           sign-with-temporary-key: true
-          # Tempprarily build only amd64
-          archs: amd64
+          archs: ${{ env.ARCHS }}
 
       - name: Debug
         run: 'pwd && echo ${{ github.workspace }} && tree ${{ github.workspace }}'
@@ -61,8 +61,7 @@ jobs:
           tag: ${{ steps.meta.outputs.tags }}
           keyring-append: /github/workspace/melange.rsa.pub
           image_refs: apko.images
-          # Tempprarily build only amd64
-          archs: amd64
+          archs: ${{ env.ARCHS }}
 
       - name: Log in to registry
         # Don't publish pull request builds
