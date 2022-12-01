@@ -44,7 +44,7 @@ jobs:
           archs: amd64
 
       - name: Debug
-        run: 'tree'
+        run: 'pwd && echo ${{ github.workspace }} && tree ${{ github.workspace }}'
 
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
