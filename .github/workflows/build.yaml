@@ -64,6 +64,15 @@ jobs:
           # Tempprarily build only amd64
           archs: amd64
 
+      - name: Log in to registry
+        # Don't publish pull request builds
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Sign the image
         # Don't publish pull request builds
         if: ${{ github.event_name != 'pull_request' }}
