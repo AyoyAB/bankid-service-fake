@@ -8,12 +8,10 @@ import log from 'loglevel';
  * @param {Object} ctx - The request context.
  * @param {function} next - The next handler in the chain.
  */
-async function requestLoggerMiddleware(ctx, next) {
+export default async function requestLoggerMiddleware(ctx, next) {
   if (ctx.request.body) {
     log.debug(`Request body: ${JSON.stringify(ctx.request.body)}.`);
   }
 
   await next();
 }
-
-export default requestLoggerMiddleware;

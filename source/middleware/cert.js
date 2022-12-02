@@ -8,7 +8,7 @@ import log from 'loglevel';
  * @param {Object} ctx - The request context.
  * @param {function} next - The next handler in the chain.
  */
-async function certMiddleware(ctx, next) {
+export default async function certMiddleware(ctx, next) {
   const clientCert = ctx.req.socket.getPeerCertificate(false);
 
   if (clientCert != null && clientCert != {}) {
@@ -22,5 +22,3 @@ async function certMiddleware(ctx, next) {
 
   await next();
 }
-
-export default certMiddleware;
