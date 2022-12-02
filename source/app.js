@@ -6,12 +6,14 @@ import https from 'node:https';
 import config from './config/index.js';
 import certMiddleware from './middleware/cert.js';
 import notFoundMiddleware from './middleware/not-found.js';
+import errorHandlerMiddleware from './middleware/error-handler.js';
 import router from './routers/root.js';
 
 const app = new Koa();
 
 app.use(certMiddleware);
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 app.use(router.routes(), router.allowedMethods());
 
