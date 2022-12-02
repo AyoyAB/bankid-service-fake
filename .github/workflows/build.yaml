@@ -48,9 +48,6 @@ jobs:
           sign-with-temporary-key: true
           archs: ${{ env.ARCHS }}
 
-      - name: Debug
-        run: 'pwd && echo ${{ github.workspace }} && tree ${{ github.workspace }}'
-
       - name: Run apko publish
         uses: chainguard-images/actions/apko-publish@main
         # Don't publish pull request builds
