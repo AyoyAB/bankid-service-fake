@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import log from 'loglevel';
 import fs from 'node:fs/promises';
 import https from 'node:https';
 
@@ -25,4 +26,6 @@ const httpsOptions = {
 
 https.createServer(httpsOptions, app.callback()).listen(config.tls.port);
 
-console.log(`Listening on port ${config.tls.port}.`);
+log.setLevel(config.logging.level, false);
+
+log.info(`Listening on port ${config.tls.port}.`);

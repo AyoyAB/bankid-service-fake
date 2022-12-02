@@ -27,6 +27,14 @@ const clients = {
  */
 const config = {
   /**
+   * The log settings.
+   */
+  logging: {
+    // NB: Set this to debug to dump the request and response data to stdout.
+    level: 'info',
+  },
+
+  /**
    * The TLS settings.
    */
   tls: {
