@@ -1,6 +1,6 @@
 {
   "name": "bankid-service-fake",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "BankID web service fake intended for use during relying party testing",
   "private": true,
   "engines": {
