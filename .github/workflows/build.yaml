@@ -45,6 +45,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
+          sep-tags: ' '
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@main
