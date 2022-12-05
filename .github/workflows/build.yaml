@@ -5,14 +5,14 @@ on:
     branches:
       - 'main'
     paths-ignore:
-      - '**/README.md'
+      - '**/*.md'
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'main'
     paths-ignore:
-      - '**/README.md'
+      - '**/*.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
