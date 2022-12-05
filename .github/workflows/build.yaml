@@ -20,6 +20,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   ARCHS: x86_64,aarch64,armv7
+  FULCIO_URL: https://fulcio.sigstore.dev
+  REKOR_URL: https://rekor.sigstore.dev
 
 jobs:
   build:
@@ -74,7 +76,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,4 +85,10 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         env:
           COSIGN_EXPERIMENTAL: 'true'
-        run: cosign sign ${{ steps.apko-publish.outputs.digest }}
+        run: |
+          cosign sign ${{ steps.apko-publish.outputs.digest }} \
+            --fulcio-url ${{ env.FULCIO_URL }} \
+            --rekor-url ${{ env.REKOR_URL }} \
+            -a sha=${{ github.sha }} \
+            -a run_id=${{ github.run_id }} \
+            -a run_attempt=${{ github.run_attempt }}
