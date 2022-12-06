@@ -93,3 +93,15 @@ jobs:
             -a sha=${{ github.sha }} \
             -a run_id=${{ github.run_id }} \
             -a run_attempt=${{ github.run_attempt }}
+
+      - name: Run Trivy vulnerability scanner
+        # Don't publish pull request builds
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: image
+          image-ref: ${{ steps.apko-publish.outputs.digest }}
+          format: table
+          exit-code: '1'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Per-request logging.
+- Image scanning during build and release.
 
 ### Changed
 
