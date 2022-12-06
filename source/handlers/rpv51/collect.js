@@ -1,8 +1,12 @@
+import log from 'loglevel';
+
 import * as cache from '../../lib/cache.js';
 import * as request from '../../lib/request.js';
 import * as response from '../../lib/response.js';
 
 export default async function collectHandler(ctx, next) {
+  log.info(`Received collect request from ${ctx.request.ip}.`);
+
   // Make sure we have a client certificate.
   ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
 
@@ -48,7 +52,11 @@ export default async function collectHandler(ctx, next) {
     );
     ctx.response.status = 400;
   }
+
+  // Set the response.
   ctx.body = collectResponse;
+
+  log.info(`Successfully processed collect request.`);
 
   await next();
 }

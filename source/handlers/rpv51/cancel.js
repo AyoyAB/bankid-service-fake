@@ -1,8 +1,12 @@
+import log from 'loglevel';
+
 import * as cache from '../../lib/cache.js';
 import * as request from '../../lib/request.js';
 import * as response from '../../lib/response.js';
 
 export default async function cancelHandler(ctx, next) {
+  log.info(`Received cancel request from ${ctx.request.ip}.`);
+
   // Make sure we have a client certificate.
   ctx.assert(ctx.state.clientCert, 401, 'No client certificate in request');
 
@@ -25,7 +29,10 @@ export default async function cancelHandler(ctx, next) {
     ctx.response.status = 400;
   }
 
+  // Set the response.
   ctx.body = cancelResponse;
+
+  log.info(`Successfully processed cancel request.`);
 
   await next();
 }
