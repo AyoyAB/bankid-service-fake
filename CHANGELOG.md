@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Updated NPM dependencies.
+
 ## [0.2.0] - 2022-12-05
 
 ### Added
@@ -14,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Per-request logging.
 - Image scanning during build and release.
 
-### Changed
+### Fixed
 
 - Updated NPM dependencies.
 
