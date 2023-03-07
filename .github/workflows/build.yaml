@@ -88,6 +88,7 @@ jobs:
           COSIGN_EXPERIMENTAL: 'true'
         run: |
           cosign sign ${{ steps.apko-publish.outputs.digest }} \
+            --yes \
             --fulcio-url ${{ env.FULCIO_URL }} \
             --rekor-url ${{ env.REKOR_URL }} \
             -a sha=${{ github.sha }} \
